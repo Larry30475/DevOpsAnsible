@@ -1,0 +1,20 @@
+---
+- name: Configure Web Servers
+  hosts: web
+  become: yes
+
+  vars:
+    document_root: /var/www/mywebsite
+    server_name: www.mywebsite.com
+
+  tasks:
+    - name: Create custom document root
+      file:
+        path: "{{ document_root }}"
+        state: directory
+        owner: www-data
+        group: www-data
+        mode: '0755'
+
+  roles:
+    - ../roles/webserver
