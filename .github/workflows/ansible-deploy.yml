@@ -25,8 +25,8 @@ jobs:
           echo "${{ secrets.REMSERV1ANSIBLE }}" > ~/.ssh/web_key
           echo "${{ secrets.REMSERVER2ANSIBLE }}" > ~/.ssh/db_key
           chmod 600 ~/.ssh/web_key ~/.ssh/db_key
-          ssh-keyscan -H 54.234.48.53 >> ~/.ssh/known_hosts
-          ssh-keyscan -H 13.218.106.191 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 34.201.147.99 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 3.90.88.254 >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
         run: |
