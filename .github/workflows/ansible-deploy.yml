@@ -1,0 +1,33 @@
+name: Ansible CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python and install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip3 install ansible
+
+      - name: Set up SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.REMSERV1ANSIBLE }}" > ~/.ssh/web_key
+          echo "${{ secrets.REMSERVER2ANSIBLE }}" > ~/.ssh/db_key
+          chmod 600 ~/.ssh/web_key ~/.ssh/db_key
+          ssh-keyscan -H 54.234.48.53 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 13.218.106.191 >> ~/.ssh/known_hosts
+
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook -i inventory.ini webserver-playbook.yml
